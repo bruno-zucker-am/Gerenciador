@@ -1,4 +1,4 @@
-# Case AeC - Gerenciador de Enderecos
+# Gerenciador de Enderecos
 
 Este sistema foi desenvolvido com foco em alta disponibilidade e isolamento de ambiente, utilizando uma arquitetura moderna de containers e proxy reverso.
 
