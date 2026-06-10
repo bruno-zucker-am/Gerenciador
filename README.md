@@ -5,6 +5,7 @@ Este sistema foi desenvolvido com foco em alta disponibilidade e isolamento de a
 ---
 
 ## Demonstracao
+https://gerenciador.bycodeai.shop/
 
 ### Screenshots do Sistema
 1. Tela de Login
