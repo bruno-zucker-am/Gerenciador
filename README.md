@@ -23,7 +23,6 @@ https://gerenciador.bycodeai.shop/
 5. Editar Endereco
 ![Novo Endereco](editarEndereco.jpg)
 
-
 ---
 
 ## Infraestrutura e Ambiente
@@ -40,45 +39,64 @@ https://gerenciador.bycodeai.shop/
 ### 1. Instalacao da estrutura padrao do .NET
 Para reconstruir ou iniciar a estrutura MVC dentro da pasta existente, foi utilizado o comando:
 
-dotnet new mvc -n CaseAeC --output .
+`dotnet new mvc -n Gerenciador --output .`
 
 ### 2. Configuracao de Dependencias
 Para garantir a persistencia de dados com SQL Server e ferramentas de migracao, instale os pacotes via terminal:
 
-export PATH="$PATH:$HOME/.dotnet/tools"
+`export PATH="$PATH:$HOME/.dotnet/tools"`
 
-dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.12
-dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.12
+`dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 8.0.12`
+`dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.12`
 
 ### 3. Migrations e Banco de Dados
 Para criar a estrutura inicial do banco de dados:
 
-dotnet ef migrations add InitialCreate
+`dotnet ef migrations add InitialCreate`
 
 Se o comando acima finalizar sem erros, rode este para criar as tabelas de verdade dentro do container do Docker:
 
-dotnet ef database update
+`dotnet ef database update`
 
-### 4. Variaveis de Ambiente
-O sistema utiliza um arquivo .env para gerenciar credenciais sensiveis. Use o arquivo de exemplo para configurar seu ambiente:
-
-cp .env_exemplo .env
-# Edite o .env com sua senha do SQL Server
-
-### 5. Orquestracao com Docker
+### 4. Orquestracao com Docker
 Para subir todo o ecossistema (Aplicacao + Banco de Dados + Nginx), utilize o comando:
 
-docker compose up -d --build
+`docker compose up -d --build`
+
+---
 
 ## Configuracao de Rede e Proxy
 A arquitetura foi desenhada para que o Nginx receba as requisicoes externas e as direcione internamente para os servicos:
-* Porta 8088: Proxy para a aplicacao (HTTP)
-* Porta 2053: Proxy seguro (HTTPS)
-* API: Mapeamento especifico no Nginx para endpoints /api/ com suporte a CORS.
+* Porta 8084: Proxy para a aplicacao (HTTP)
+* Porta 2083: Proxy seguro (HTTPS)
+* API: Mapeamento especifico no Nginx para endpoints `/api/` com suporte a CORS.
+
+---
 
 ## Estrutura do Projeto
-* Controllers/: Logica de controle das requisicoes.
-* Models/: Representacao das entidades e ViewModel de Login.
-* Views/: Interfaces Razor para Usuarios e Enderecos.
-* Data/: Contexto do banco de dados e configuracoes do EF Core.
-* nginx.conf: Configuracoes de roteamento e seguranca do servidor web.
+
+Abaixo está a representação da estrutura de pastas do projeto, baseada no ambiente de desenvolvimento:
+
+* **Diretórios Base da Aplicação MVC:**
+  * `Controllers/`: Lógica de controle das requisições.
+  * `Models/`: Representação das entidades e ViewModel de Login.
+  * `Views/`: Interfaces Razor para Usuários e Endereços.
+  * `Data/`: Contexto do banco de dados e configurações do EF Core.
+  * `Migrations/`: Arquivos gerados pelo Entity Framework para versionamento e criação do banco.
+  * `wwwroot/`: Arquivos estáticos da aplicação (CSS, JS, etc.).
+
+* **Diretórios de Apoio e Sistema:**
+  * `bin/`, `obj/` e `Properties/`: Diretórios padrões do .NET gerados durante a compilação.
+  * `cdn/`: Gerenciamento de arquivos estáticos ou uploads externos.
+  * `sql/`: Scripts soltos e consultas de banco de dados estruturadas.
+
+* **Arquivos Principais (.NET):**
+  * `Program.cs`: Ponto de entrada e configuração de serviços da aplicação.
+  * `appsettings.json`: Configurações de ambiente, como strings de conexão.
+  * `gerenciador.csproj`: Gerenciamento de dependências e configuração do projeto em C#.
+
+* **Infraestrutura e Orquestração (`infra/`):** O projeto conta com um diretório `infra` dedicado à infraestrutura. Dentro das pastas de configuração (como a pasta do `Nginx`), localizam-se:
+  * `compose.yml`: Arquivo para subir todo o ambiente de containers (App, Banco, Web Server).
+  * `Dockerfile`: Receita de construção da imagem da aplicação.
+  * `nginx.conf`: Configurações de roteamento e segurança do servidor web proxy reverso.
+  
