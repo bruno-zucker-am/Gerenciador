@@ -20,6 +20,10 @@ https://gerenciador.bycodeai.shop/
 4. Cadastro de Novo Endereco
 ![Novo Endereco](cadastroNovoEndereco.jpg)
 
+5. Editar Endereco
+![Novo Endereco](editarEndereco.jpg)
+
+
 ---
 
 ## Infraestrutura e Ambiente
